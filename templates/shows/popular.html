@@ -1,0 +1,32 @@
+{% for movie in movies %}
+<p>Title: {{movie.title}}</p>
+<p>Popularity: {{movie.popularity}}</p>
+<p>Genre:
+{% for genre in movie.genres %}
+{{genre}}
+{% endfor %}
+</p>
+<p>
+    Release date: {{ movie.release_date}}
+</p>
+<br>
+{% endfor %}
+
+{% for movie in movies %}
+<p>Title: {{movie.title}}</p>
+<p>Popularity: {{movie.popularity}}</p>
+<p>Genre:
+{% for genre in movie.genres %}
+{{genre}}
+{% endfor %}
+</p>
+<p>
+    Release date: {{ movie.release_date}}
+</p>
+<br>
+{% endfor %}
+
+<br>
+<p>Current page: {{paginator.page}}</p>
+<p>Has next page: {{paginator.hasNext}}</p>
+<p>Total pages: {{paginator.totalPages}}</p>

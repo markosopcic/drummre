@@ -1,0 +1,176 @@
+<html xmlns:align="http://www.w3.org/1999/xhtml">
+<head>
+    <style>
+
+
+
+    </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/jquery-3.4.1.js"
+  integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="#">Društvene mreže</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+
+    </ul>
+      {%if user.is_authenticated is False%}
+    <form method="post" action="login/" class="form-inline my-2 my-lg-0">
+    {% csrf_token %}
+        <input placeholder="Username" class="form-control mr-sm-2" type="text" name="username"/>
+        <input placeholder="Password" class="form-control mr-sm-2" type="password" name="password"/>
+      <button class="btn btn-success my-2 my-sm-0" formaction="login/" type="submit">Login</button>
+    </form>
+          <form class="form-inline my-2 my-lg-0" style="width:10%;padding-left:1%" method="get" action="{% url 'social:begin' 'google-oauth2' %}">
+      <button style="margin-left:1%" href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-secondary  mr-sm-2" >Google Login</button>
+          </form>
+          <form class="form-inline my-2 my-lg-0" style="width:10%;padding-left:1%" method="get" action="{% url 'social:begin' 'twitter' %}">
+          <button style="margin-left:1%" href="{% url 'social:begin' 'twitter' %}" class="btn btn-secondary  mr-sm-2" >Twitter Login</button>
+          </form>
+                    </form>
+          <form class="form-inline my-2 my-lg-0" style="width:10%;padding-left:1%" method="get" action="{% url 'social:begin' 'reddit' %}">
+          <button style="margin-left:1%" href="{% url 'social:begin' 'reddit' %}" class="btn btn-secondary  mr-sm-2" >Reddit Login</button>
+          </form>
+  </div>
+          {% else %}
+          <div style="color:white" class="my-2 my-sm-0"> Welcome {{ user }}</div>
+          <a href="{% url 'logout' %}" style="margin-left:1%" class="btn btn-danger my-2 my-sm-0" type="submit">Logout</a>
+    {% endif %}
+</nav>
+{% if messages %}
+<div class="alert alert-dismissible alert-danger">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Oh snap! {% for message in messages %}{{ message }}{% endfor %}</strong>
+</div>
+{% endif %}
+
+{% if user.is_authenticated is False %}
+<div style="width:30%;margin-top:5%" class="container">
+        <form  action="register/" method="post">
+            {% csrf_token %}
+        <label>Username</label>
+            <input class="form-control mr-sm-2" type="text" name="username"  placeholder="Username"/><p>
+                    <label>Password</label>
+            <input class="form-control mr-sm-2" type="password" name="password"  placeholder="Password"/><p>
+                    <label>Confirm Password</label>
+            <input class="form-control mr-sm-2" type="password" name="password2"  placeholder="Confirm Password"/><p>
+                    <label>First Name</label>
+            <input class="form-control mr-sm-2" type="text" name="firstname"  placeholder="First Name"/><p>
+                    <label>Last Name</label>
+            <input class="form-control mr-sm-2" type="text" name="lastname"  placeholder="Last Name"/><p>
+                    <label>Email</label>
+            <input class="form-control mr-sm-2" type="text" name="email"  placeholder="Email"/><p>
+
+        <button style="text-align:center;width:100%;margin-top:2%" class="btn btn-primary" type="submit">Sign up</button>
+            </form>
+    </div>
+{% else %}
+    <div id="weather"></div>
+<div style="margin-top:1%" class="card-group">
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 movie_list">
+                    <div class="pt-8 pb-2 mb-3 border-bottom">
+
+                        <div class="row">
+                            <h1>Movies</h1>
+                        </div>
+
+                        <div id="movies" class="row">
+
+                        </div>
+                    </div>
+<button class="btn btn-primary" align="center" style="width:100%" onclick="getLocation()">Load more Movies</button>
+                </main>
+
+
+
+</div>
+    <script type="text/javascript">
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(useLocation);
+        }
+    };
+
+    function useLocation(position) {
+        $.ajax({
+            async: false,
+            method: "GET",
+            url:"/get_movies?longitude="+position.coords.longitude+"&latitude="+position.coords.latitude,
+            success:function(result){
+                result.weather = JSON.parse(result.weather)
+                result.movies = JSON.parse(result.movies)
+                var recommending = "";
+                var id = result.weather.weather[0].id/100;
+                if(id>=2 && id<3 || id>=7 && id<8) recommending = "Thrillers and Horrors";
+                else if(id>=5  && id<6 || id>=3 && id<4) recommending = "Dramas and Misteries";
+                else if(id>=6 && id<7) recommending="Romantic and Family";
+                else recommending="Action and Comedy";
+                var temp = result.weather.main.temp-273.15;
+                $("#weather").empty()
+                var w = $("<div>Weather: "+result.weather.weather[0].description+"<p>Temperature: "+temp.toFixed(2)+" degrees Celsius<p>Recommending movies of type: "+recommending+"</div>")
+                $("#weather").append(w)
+                for(var i = 0;i<result.movies.length;i++){
+                    var image = "https://image.tmdb.org/t/p/w500"+result.movies[i].fields.poster_path;
+                    if(image === undefined){
+                        image = 'data:image/png;base64,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'
+                    }
+                    var el = $("                            <div class=\"card-view\">\n" +
+                        "                                <div class=\"card-header\"><img width=\"275\" height=\"350\" style='display:block;margin:auto' src="+image+">" +
+                        "                                    <div class=\"card-header-icon\">\n"+
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                                <div class=\"card-movie-content\">\n" +
+                        "                                    <div class=\"card-movie-content-head\">\n" +
+                        "                                        <a href=\"movie?id="+result.movies[i].fields.imdb_id+"\">\n" +
+                        "                                            <h3 class=\"card-movie-title\">"+result.movies[i].fields.original_title+"</h3>\n" +
+                        "                                        </a>\n" +
+                        "                                        <div class=\"ratings\"><span>"+result.movies[i].fields.vote_average+"</span>/10</div>\n" +
+                        "                                    </div>\n" +
+                        "                                    <div class=\"card-movie-info\">\n" +
+                        "                                        <div class=\"movie-running-time\">\n" +
+                        "                                            <label>Release Date</label>\n" +
+                        "                                            <span>"+result.movies[i].fields.release_date+"</span>\n" +
+                        "                                        </div>\n" +
+                        "                                        <div class=\"movie-running-time\">\n" +
+                        "                                            <label>Running time</label>\n" +
+                        "                                            <span>"+(result.movies[i].fields.runtime === null? 0:result.movies[i].fields.runtime)+" min</span>\n" +
+                        "                                        </div>\n" +
+                        "                                    </div>\n" +
+                        "                                </div>\n" +
+                        "                            </div>")
+                    var element = $("<div class=\"card text-white bg-primary mb-3\" style=\"width:30%\">\n" +
+                        "  <div style='align-text:center' class=\"card-header\">"+result.movies[i].fields.title+"</div>\n" +
+                        "  <div class=\"card-body\">\n" +
+                        " <img src='{{ image }}'/>" +
+                        "  </div>\n" +
+                        "</div>");
+                    $("#movies").append(el);
+                }
+            },error:function(result){
+
+            }
+        })
+    }
+        $(document).ready(function(){getLocation()})
+</script>
+
+{% endif %}
+
+</body>
+</html>

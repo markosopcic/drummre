@@ -1,0 +1,11 @@
+<p>{{movie.title}}</p>
+
+<br>
+Recommended:
+{% for movie in recommended %}
+<p>{{movie.title}}</p>
+
+{% endfor %}
+ {% for review in reviews %}
+    <p>{{ review.content }}</p>
+{% endfor %}
