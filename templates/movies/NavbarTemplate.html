@@ -23,8 +23,20 @@
 
 <body>
     <div id="root">
-        <nav class="navbar navbar-light bg-light">
-            <span class="navbar-brand mb-0 h1">Moozr!</span>
+        <nav class="navbar navbar-expand navbar-light bg-light">
+        <div class="navbar-header">
+            <a href="#" style="width:20%" class="navbar-brand">Moozr!</a>
+        </div>
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+            <a href="/"  class="nav-link">Home</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+            <a href="/profile"  class="nav-link">Profile</a>
+            </li>
+        {% endif %}
+        </ul>
             {%if user.is_authenticated is False%}
     <form method="post" action="login/" class="form-inline my-2 my-lg-0">
     {% csrf_token %}
@@ -42,6 +54,7 @@
           <button width="40%" height="40%" style="margin-left:1%" href="{% url 'social:begin' 'reddit' %}" class="btn btn-secondary  mr-sm-2" ><img width="100%" height="100%" src="{% static "reddit-logo.png" %}"></img></button>
           </form>
           {% else %}
+
           <div> Welcome {{ user }}</div>
           <a href="{% url 'logout' %}" style="margin-left:1%" class="btn btn-danger my-2 my-sm-0" type="submit">Logout</a>
     {% endif %}

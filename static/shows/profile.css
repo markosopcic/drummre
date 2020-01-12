@@ -1,0 +1,197 @@
+.navbar {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.navbar .navbar-brand {
+    flex-grow: 1;
+    padding: 0;
+    line-height: 2.5rem;
+}
+
+.navbar .navbar-text {
+    padding: .5rem 1rem;
+}
+
+.wrapper{
+    display: flex;
+}
+
+
+.wrapper .sidebar {
+    flex-grow: 0;
+    flex-shrink: 0;
+    min-height: 100vh;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-right-color: rgba(0,0,0,.125);
+    margin-top: -3.5rem;
+}
+
+.wrapper .sidebar .offset {
+    height: 3.5rem;
+}
+
+.wrapper .sidebar .list-group-item {
+    border: none;
+    margin-bottom: 0px;
+}
+
+.wrapper .sidebar .list-divider {
+    height: 0px;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.wrapper .content {
+    flex-grow: 1;
+    padding: 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper .content-title {
+    font-size: 1.25rem;
+    padding: .75rem 0;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.wrapper .reccomendations {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 1rem;
+}
+
+.wrapper .reccomendations .toggles {
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: .25rem 1rem;
+    background-color:  rgba(0,0,0,.5);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.wrapper .reccomendations .toggles button {
+    min-width: 100px;
+}
+
+.wrapper .reccomendations .search-menu ,
+.wrapper .reccomendations .filter-menu {
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: none;
+    background-color:  rgba(0,0,0,.5);
+    padding: .25rem 0;
+}
+
+.wrapper .reccomendations .search-menu .input-menu {
+    display: flex;
+    padding: 0 1rem;
+    flex-grow: 1;
+}
+
+.wrapper .reccomendations .filter-menu .select-menu {
+    display: flex;
+    padding: 0 1rem;
+}
+
+.wrapper .reccomendations .filter-menu .select-menu select {
+    width: 10rem;
+}
+
+.wrapper .reccomendations .search-menu .apply-button,
+.wrapper .reccomendations .filter-menu .apply-button {
+    padding: 0 1rem;
+}
+
+.wrapper .reccomendations .filter-menu .select-menu .menu-name{
+    color: white;
+    padding: .375rem .75rem;
+}
+
+.wrapper .reccomendations .pagination-container {
+    flex-grow: 0;
+    flex-shrink: 0;
+    border-left: 1px solid rgba(0,0,0,.5);
+    border-right: 1px solid rgba(0,0,0,.5);
+}
+
+.wrapper .reccomendations .pagination-container .pagination-nav {
+    width: 100%;
+}
+
+.wrapper .reccomendations .pagination-container .pagination {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+ .movies {
+    flex-grow: 1;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid rgba(0,0,0,.5);
+    border-top: none;
+}
+
+ .movies .movie-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+}
+
+ .movies .movie-list .card-view {
+    padding: 1rem;
+    width: 15.5rem;
+}
+
+ .movies .movie-list .card-header {
+    background-color:  rgba(0,0,0,.5);
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.movies .movie-list .card-header img {
+    max-height: 14rem;
+    max-width: 11rem;
+    display: block;
+    margin: auto;
+}
+
+.movies .movie-list .card-header .card-like {
+    height: 2.5rem;
+    width: 2.5rem;
+    line-height: 2.5rem;
+    font-size: 2rem;
+    text-align: center;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,.5);
+    margin-top: -2.5rem;
+    margin-left: 8.5rem;
+    position: absolute;
+}
+
+ .movies .movie-list .card-content {
+     background-color:lightgrey!important;
+     opacity:70%;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border: 1px solid rgba(0,0,0,.5);
+    padding: 0.25rem;
+}
+
+ .movies .movie-list .card-content .card-movie-title {
+    font-size: 1.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+ .movies .movie-list .card-content .ratings {
+    font-weight: bold;
+}
+
+.filler {
+    flex-grow: 1;
+}

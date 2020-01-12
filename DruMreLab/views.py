@@ -10,9 +10,11 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.core import serializers
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from .models import *
 from django.contrib.auth.decorators import login_required
 import urllib3
+
 import random
 from django.contrib import messages
 from django.http import JsonResponse
@@ -186,7 +188,7 @@ def popularMovies(request):
 
     liked_movies = []
     if request.user.is_authenticated:
-        user = UserLikedMovies.objects.filter(id=request.user.id)
+        user = UserLikedMovies.objects.filter(user_id=request.user.id)
         if user.exists():
             liked_movies = [int(lm) for lm in user.first().liked_movies]
 
@@ -196,15 +198,15 @@ def popularMovies(request):
 def likemovie(request):
     if request.user.is_authenticated:
         movie_id =request.GET.get("movie_id")
-        user = UserLikedMovies.objects.filter(id=request.user.id)
+        user = UserLikedMovies.objects.filter(user_id=request.user.id)
         if user.exists() is False:
-            UserLikedMovies.objects.create(id=request.user.id,liked_movies=[])
-        user = UserLikedMovies.objects.filter(id = request.user.id).first()
+            UserLikedMovies.objects.create(user_id=request.user.id,liked_movies=[])
+        user = UserLikedMovies.objects.filter(user_id = request.user.id).first()
         if movie_id in user.liked_movies:
             user.liked_movies.remove(movie_id)
         else:
             user.liked_movies.append(movie_id)
-        UserLikedMovies.objects.filter(id = request.user.id).update(liked_movies=user.liked_movies)
+        UserLikedMovies.objects.filter(user_id = request.user.id).update(liked_movies=user.liked_movies)
         return HttpResponse(status=200)
     return HttpResponseBadRequest()
 
@@ -257,8 +259,33 @@ def user_login(request):
     else:
         return HttpResponseRedirect(reverse('index'))
 
+def deleteProfile(request):
+    if request.user.is_authenticated:
+            User.objects.filter(id=request.user.id).delete()
+            logout(request)
+            return HttpResponseRedirect(reverse('index'))
+
 def profile(request):
-    return
+    if request.user.is_authenticated:
+        liked = UserLikedMovies.objects.filter(user_id=request.user.id)
+        if not liked.exists():
+            liked = None
+        else:
+            liked = liked.first()
+        if liked:
+            liked_ids = [int(mid) for mid in liked.liked_movies]
+            movies = list(Movie.objects.mongo_find({"id":{"$in":liked_ids}}))
+        else:
+            movies = None
+        if movies:
+            backdrop = list(Movie.objects.mongo_find({"id":{"$in":liked_ids}}))
+            backdrop = list(filter(lambda x:x["backdrop_path"] is not None,backdrop))
+            backdrop = random.choice(backdrop)["backdrop_path"]
+        else:
+            backdrop = None
+        return render(request, "movies/profile.html",{"user":request.user,"movies":movies,"backdrop":backdrop})
+    else:
+        return HttpResponseBadRequest()
 ##find distinct stuff Movie.objects.mongo_find({}).distinct("genres")
 def index(request):
     if request.user.is_authenticated:

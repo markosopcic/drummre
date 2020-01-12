@@ -23,10 +23,12 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('',views.index,name="index"),
+    path('deleteProfile/',views.deleteProfile),
     path('admin/', admin.site.urls),
     path('userlikedmovies/',views.listuserliked),
     path('recommendmovies/',views.recommendMovies),
     path('movies/<int:id>/', views.movieDetail),
+    path('profile/',views.profile),
     path('likemovie/',views.likemovie,name="likemovie"),
     path('popularmovies/',views.popularMovies,name="popularmovies"),
     path('register/',views.signup,name="register"),
