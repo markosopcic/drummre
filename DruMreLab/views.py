@@ -61,11 +61,11 @@ def recommendMovies(request):
     if request.user.is_authenticated is False:
         return render(request, "some.html", {"movies": []})
     liked = UserLikedMovies.objects.filter(id=request.user.id)
-    if not liked.exists():
-        return render(request,"some.html",{"movies":[]})
-    liked = liked.first().liked_movies
-    tmdb_ids = Movie.objects.mongo_find({"imdb_id":{"$in":liked}}).distinct("id")
-    movie_names = ['Toy Story 2', 'Life Itself']
+    if not liked.exists() or len(liked.first().liked_movies) < 1:
+        return HttpResponseRedirect(reverse('popularmovies') + "?like_msg=true")
+    liked = [int(l) for l in liked.first().liked_movies]
+    tmdb_ids = Movie.objects.mongo_find({"id":{"$in":liked}}).distinct("id")
+    movie_names = Movie.objects.mongo_find({"id":{"$in":liked}}).distinct("title")
 
     td_url = 'https://tastedive.com/api/similar?k=353012-Drumre-AR4Y3PKE&q=movie:'
     tmdb_url1 = 'https://api.themoviedb.org/3/movie/'
@@ -78,7 +78,7 @@ def recommendMovies(request):
     skipped2 = 0
 
     # TASTEDIVE
-    for name in movie_names:
+    for name in movie_names[-10:]:
 
         td_list = []
         movie_res = requests.get(td_url + str(name.strip()))
@@ -100,10 +100,10 @@ def recommendMovies(request):
         for obj in td_to_tmdb:
             tmdb_list.append(obj)
 
-    print("Movies fetched (skipped: " + str(skipped1) + ")")
+    print("Movies fetched (skipped: " + str(skipped1) + "):" + str(len(tmdb_list)))
 
     # TMDB
-    for id in tmdb_ids:
+    for id in tmdb_ids[-10:]:
 
         movie_res = requests.get(tmdb_url1 + str(id) + tmdb_url2)
         if movie_res.status_code != 200:
@@ -120,7 +120,7 @@ def recommendMovies(request):
             if obj.get('id') not in tmdb_ids:
                 tmdb_list.append(obj.get('id'))
 
-    print("Movies fetched (skipped: " + str(skipped2) + ")")
+    print("Movies fetched (skipped: " + str(skipped2) + "):" + str(len(tmdb_list)))
 
     final_counter = Counter(tmdb_list)
 
@@ -130,7 +130,14 @@ def recommendMovies(request):
         final_list.append(obj[0])
 
     resultMovies = list(Movie.objects.mongo_find({"id":{"$in":final_list}}))
-    context = {'movies': resultMovies[:20]}
+
+    liked_movies = []
+    if request.user.is_authenticated:
+        user = UserLikedMovies.objects.filter(id=request.user.id)
+        if user.exists():
+            liked_movies = [int(lm) for lm in user.first().liked_movies]
+
+    context = {'movies': resultMovies[:20], 'liked': liked_movies}
     return render(request, 'movies/recommend.html', context)
 
 def listuserliked(request):
