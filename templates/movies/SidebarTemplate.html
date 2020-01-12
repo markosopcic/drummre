@@ -1,0 +1,17 @@
+{% extends "movies/NavbarTemplate.html" %}
+{% block content %}
+<div class="wrapper">
+    <div class="sidebar">
+        <div class="offset"></div>
+        <ul class="list-group">
+            <li class="list-group-item" onclick="location.href={% url 'popularmovies' %}">Popular movies</li>
+            <li class="list-divider" />
+            <li class="list-group-item">Global recommendations</li>
+            <li class="list-group-item">My recommendations</li>
+            <li class="list-divider" />
+            <li class="list-group-item">My profile</li>
+        </ul>
+    </div>
+    {% block inner_content %}{% endblock %}
+</div>
+{% endblock %}
