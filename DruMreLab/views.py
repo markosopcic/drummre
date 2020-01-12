@@ -242,9 +242,9 @@ def signup(request):
         u.save()
         user = authenticate(username=request.POST.get("username"), password=request.POST.get("password"))
         login(request, user)
-        return render(request,'index.html')
+        return HttpResponseRedirect(reverse('popularmovies'))
     else:
-        return render(request,'index.html')
+        return HttpResponseRedirect(reverse('login'))
 
 def user_login(request):
     if request.method == 'POST':
@@ -256,7 +256,7 @@ def user_login(request):
         if user:
             if user.is_active:
                 login(request,user)
-                return render(request,'index.html',{})
+                return HttpResponseRedirect(reverse('popularmovies'))
             else:
                 messages.add_message(request,messages.INFO,"Inactive account.")
                 return HttpResponseRedirect(reverse('index'))

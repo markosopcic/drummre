@@ -1,6 +1,12 @@
 {% extends "movies/NavbarTemplate.html" %}
 
 {% block content %}
+    {% if messages %}
+<div class="alert alert-dismissible alert-danger">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Oh snap! {% for message in messages %}{{ message }}{% endfor %}</strong>
+</div>
+{% endif %}
 {% if user.is_authenticated is False %}
 <div style="width:30%;margin-top:5%" class="container">
         <form  action="register/" method="post">
