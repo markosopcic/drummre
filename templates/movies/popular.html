@@ -1,31 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Movie reccomendation app!" />
-    <title>Moozr!</title>
-
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'shows/popular.css' %}">
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-</head>
-
-<body>
-    <div id="root">
-        <nav class="navbar navbar-light bg-light">
-            <span class="navbar-brand mb-0 h1">Moozr!</span>
-            <span class="navbar-text">
-                Logged in as {{ user.username }}.
-            </span>
-            <button class="btn btn-outline-success" type="button">Logout</button>
-        </nav>
+{% extends "movies/NavbarTemplate.html" %}
+{% block content %}
         <div class="wrapper">
             <div class="sidebar">
                 <div class="offset"></div>
@@ -132,7 +106,7 @@
                                 <div class="card-content">
                                     <div class="card-content-head">
                                         <div class="title">
-                                            <a href="">
+                                            <a href="/movies/{{ movie.id }}">
                                                 <h3 class="card-movie-title">{{movie.title}}</h3>
                                             </a>
                                         </div>
@@ -248,3 +222,4 @@
 <p>Has next page: {{paginator.hasNext}}</p>
 <p>Total pages: {{paginator.totalPages}}</p>
 -->
+{% endblock %}

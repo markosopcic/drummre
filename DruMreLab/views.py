@@ -24,7 +24,7 @@ client = MongoClient('localhost', 27017)
 def userPreferences(request):
     genres = Movie.objects.mongo_distinct("genres")
     context = {'genres': genres}
-    return render(request, 'shows/preferences.html', context)
+    return render(request, 'movies/preferences.html', context)
 
 def movieDetail(request, id):
     movie = get_object_or_404(Movie, id=id)
@@ -46,8 +46,13 @@ def movieDetail(request, id):
         reviews = reviews.first().results
     else:
         reviews = None
-    context = {'movie': movie, 'recommended': recommendedMovies,"reviews":reviews}
-    return render(request, 'shows/detailMovie.html', context)
+    crew = Credits.objects.filter(imdb_id=id)
+    if crew.exists():
+        crew = crew.first()
+    else:
+        crew = None
+    context = {'movie': movie, 'recommended': recommendedMovies,"reviews":reviews,"credits":crew}
+    return render(request, 'movies/detailMovie.html', context)
 
 
 def recommendMovies(request):
@@ -124,7 +129,7 @@ def recommendMovies(request):
 
     resultMovies = list(Movie.objects.mongo_find({"id":{"$in":final_list}}))
     context = {'movies': resultMovies[:20]}
-    return render(request, 'shows/recommend.html', context)
+    return render(request, 'movies/recommend.html', context)
 
 def listuserliked(request):
     if request.user.is_authenticated is False:
@@ -172,13 +177,14 @@ def popularMovies(request):
     movies = list(movies)
 
     genres = Movie.objects.mongo_distinct("genres")
+    genres.remove(None)
     genres.sort()
     dates = Movie.objects.mongo_distinct("release_date")
     years = list(set([d[:4] for d in dates if len(d)>3]))
     years.sort(reverse = True)
 
     context = {'movies': movies, 'paginator': paginator, 'genres': genres, 'years': years}
-    return render(request, 'shows/popular.html', context)
+    return render(request, 'movies/popular.html', context)
 
 def likemovie(request):
     if request.user.is_authenticated:
@@ -245,6 +251,8 @@ def profile(request):
     return
 ##find distinct stuff Movie.objects.mongo_find({}).distinct("genres")
 def index(request):
+    if request.user.is_authenticated:
+        return popularMovies(request)
     return render(request, 'index.html', {})
 
 @login_required

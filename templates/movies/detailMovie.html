@@ -1,0 +1,5 @@
+{% extends "movies/NavbarTemplate.html" %}
+{% block content %}
+<h2>{{ movie.title }}</h2>
+    <img src="https://image.tmdb.org/t/p/w300{{ movie.poster_path }}">
+{% endblock %}
