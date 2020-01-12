@@ -55,6 +55,7 @@
     padding: 0 1.25rem;
     display: flex;
     flex-direction: column;
+    background-color: rgba(255,255,255,.8);
 }
 
 .wrapper .content .alert {
@@ -127,6 +128,7 @@
     flex-shrink: 0;
     border-left: 1px solid rgba(0,0,0,.5);
     border-right: 1px solid rgba(0,0,0,.5);
+    background-color: white;
 }
 
 .wrapper .reccomendations .pagination-container .pagination-nav {
@@ -144,6 +146,7 @@
     border-bottom-right-radius: 8px;
     border: 1px solid rgba(0,0,0,.5);
     border-top: none;
+    background-color: white;
 }
 
 .wrapper .reccomendations .movies.no-header {

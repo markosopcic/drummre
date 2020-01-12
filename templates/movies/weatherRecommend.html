@@ -1,15 +1,18 @@
 {% extends "movies/SidebarTemplate.html" %}
 {% block inner_content %}
-            <div class="container-fluid content">
-                <div class="content-title">
-                    <div id="weather">
-                        Your current weather: {{ weather_description }} <img src="http://openweathermap.org/img/wn/{{weather_icon}}@2x.png" />
-                        <p>Based on that recommending the random movies from genres: {{ genres }}
-                    </div>
-                    Recommended movies:
-                </div>
-                <div class="reccomendations">
-                <!--
+<div
+    style="height:100%;width=100%;background-image:url('https://image.tmdb.org/t/p/original{{ backdrop }}');background-attachment:fixed;background-size:cover;">
+    <div class="container-fluid content">
+        <div class="content-title">
+            <div id="weather">
+                Your current weather: {{ weather_description }} <img
+                    src="http://openweathermap.org/img/wn/{{weather_icon}}@2x.png" />
+                <p>Based on that recommending the random movies from genres: {{ genres }}
+            </div>
+            Recommended movies:
+        </div>
+        <div class="reccomendations">
+            <!--
                    <div class="toggles">
                         <button type="button" class="btn btn-outline-light"
                             onclick="toggleMenuDisplay('search-menu', 'filter-menu')">Search...</button>
@@ -85,107 +88,109 @@
                         </nav>
                     </div>
                 -->
-                    {% if movies|length == 0 %}
-                    <div class="alert alert-secondary" role="alert">
-                        No recommendations were found based on your favorited movies.
-                    </div>
-                    {% else %}
-                    <div class="movies no-header">
-                        <div class="movie-list">
-                            {% for movie in movies %}
-                            <div class="card-view">
-                                <div class="card-header">
-                                    {% if movie.poster_path %}
-                                    <img src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}">
-                                    {% else %}
-                                    <img src='https://cdn.pixabay.com/photo/2013/07/12/13/58/camera-147680_960_720.png'>
-                                    {% endif %}
-                                    <button id="like-{{movie.id}}" type="button" class="btn card-like {% if movie.id in liked %}btn-secondary{% else %}btn-light{% endif %}"
-                                        onclick="sendLike({{movie.id}})">♥</button>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-content-head">
-                                        <div class="title">
-                                            <a href="/movies/{{ movie.id }}">
-                                                <h3 class="card-movie-title">{{movie.title}}</h3>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="card-movie-info">
-                                        <div class="ratings">
-                                            <span>Rating: </span>
-                                            <span>{{movie.vote_average}}/10</span>
-                                        </div>
-                                        <div class="movie-running-time">
-                                            <span>Release Date: </span>
-                                            <span>{{movie.release_date}}</span>
-                                        </div>
-                                        {% if movie.runtime %}
-                                        <div class="movie-running-time">
-                                            <span>Running time: </span>
-                                            <span>{{movie.runtime}} min</span>
-                                        </div>
-                                        {% endif %}
-                                    </div>
+            {% if movies|length == 0 %}
+            <div class="alert alert-secondary" role="alert">
+                No recommendations were found based on your favorited movies.
+            </div>
+            {% else %}
+            <div class="movies no-header">
+                <div class="movie-list">
+                    {% for movie in movies %}
+                    <div class="card-view">
+                        <div class="card-header">
+                            {% if movie.poster_path %}
+                            <img src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}">
+                            {% else %}
+                            <img src='https://cdn.pixabay.com/photo/2013/07/12/13/58/camera-147680_960_720.png'>
+                            {% endif %}
+                            <button id="like-{{movie.id}}" type="button"
+                                class="btn card-like {% if movie.id in liked %}btn-secondary{% else %}btn-light{% endif %}"
+                                onclick="sendLike({{movie.id}})">♥</button>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-content-head">
+                                <div class="title">
+                                    <a href="/movies/{{ movie.id }}">
+                                        <h3 class="card-movie-title">{{movie.title}}</h3>
+                                    </a>
                                 </div>
                             </div>
-                            {% endfor %}
+                            <div class="card-movie-info">
+                                <div class="ratings">
+                                    <span>Rating: </span>
+                                    <span>{{movie.vote_average}}/10</span>
+                                </div>
+                                <div class="movie-running-time">
+                                    <span>Release Date: </span>
+                                    <span>{{movie.release_date}}</span>
+                                </div>
+                                {% if movie.runtime %}
+                                <div class="movie-running-time">
+                                    <span>Running time: </span>
+                                    <span>{{movie.runtime}} min</span>
+                                </div>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
-                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
 
-    <script>
-        /*
-        function toggleMenuDisplay(on, off) {
-            let current = document.getElementsByClassName(on)[0];
-            if (current) {
-                let currDisplay = current.currentStyle ? current.currentStyle.display : getComputedStyle(current, null).display;
-                document.getElementsByClassName(on)[0].style.display = currDisplay == 'none' ? 'flex' : 'none';
-                document.getElementsByClassName(off)[0].style.display = 'none'
+<script>
+    /*
+    function toggleMenuDisplay(on, off) {
+        let current = document.getElementsByClassName(on)[0];
+        if (current) {
+            let currDisplay = current.currentStyle ? current.currentStyle.display : getComputedStyle(current, null).display;
+            document.getElementsByClassName(on)[0].style.display = currDisplay == 'none' ? 'flex' : 'none';
+            document.getElementsByClassName(off)[0].style.display = 'none'
+        }
+    }
+    function getFilterUrl() {
+        let gs = document.getElementById("genre-select");
+        let g = gs.options[gs.selectedIndex].text;
+        let ys = document.getElementById("year-select");
+        let y = ys.options[ys.selectedIndex].text;
+        let path = "{% url 'popularmovies' %}?";
+        if (g != "All") path += "genre=" + g;
+        if (g != "All" && y != "All") path += "&";
+        if (y != "All") path += "year=" + y;
+        return path;
+    }
+    function getSearchUrl() {
+        let s = document.getElementById("search").value;
+        if (s) return "{% url 'popularmovies' %}?search=" + s;
+        return "{% url 'popularmovies' %}";
+    }
+    function getPagingUrl(page) {
+        let s = "{{ request.GET.search }}";
+        let g = "{{ request.GET.genre }}";
+        let y = "{{ request.GET.year }}";
+        let path = "{% url 'popularmovies' %}?";
+        if (s) path += "search=" + s + "&";
+        if (g) path += "genre=" + g + "&";
+        if (y) path += "year=" + y + "&";
+        path += "page=" + page;
+        return path;
+    }
+    */
+    function sendLike(id) {
+        const Http = new XMLHttpRequest();
+        Http.open("GET", '{% url 'likemovie' %}?movie_id=' + id);
+        Http.send();
+        Http.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("like-" + id).classList.toggle('btn-light');
+                document.getElementById("like-" + id).classList.toggle('btn-secondary');
             }
         }
-        function getFilterUrl() {
-            let gs = document.getElementById("genre-select");
-            let g = gs.options[gs.selectedIndex].text;
-            let ys = document.getElementById("year-select");
-            let y = ys.options[ys.selectedIndex].text;
-            let path = "{% url 'popularmovies' %}?";
-            if (g != "All") path += "genre=" + g;
-            if (g != "All" && y != "All") path += "&";
-            if (y != "All") path += "year=" + y;
-            return path;
-        }
-        function getSearchUrl() {
-            let s = document.getElementById("search").value;
-            if (s) return "{% url 'popularmovies' %}?search=" + s;
-            return "{% url 'popularmovies' %}";
-        }
-        function getPagingUrl(page) {
-            let s = "{{ request.GET.search }}";
-            let g = "{{ request.GET.genre }}";
-            let y = "{{ request.GET.year }}";
-            let path = "{% url 'popularmovies' %}?";
-            if (s) path += "search=" + s + "&";
-            if (g) path += "genre=" + g + "&";
-            if (y) path += "year=" + y + "&";
-            path += "page=" + page;
-            return path;
-        }
-        */
-        function sendLike(id) {
-            const Http = new XMLHttpRequest();
-            Http.open("GET", '{% url 'likemovie' %}?movie_id=' + id);
-            Http.send();
-            Http.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("like-" + id).classList.toggle('btn-light');
-                    document.getElementById("like-" + id).classList.toggle('btn-secondary');
-                }
-            }
-        }
-    </script>
+    }
+</script>
 
 
 <!--

@@ -68,7 +68,7 @@
             </form>
             {% else %}
 
-            <div> Welcome {{ user }}</div>
+            <div> Welcome, {{ user }}!</div>
             <a href="{% url 'logout' %}" style="margin-left:1%" class="btn btn-danger my-2 my-sm-0"
                 type="submit">Logout</a>
             {% endif %}
