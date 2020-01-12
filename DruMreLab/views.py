@@ -177,7 +177,7 @@ def popularMovies(request):
     movies = list(movies)
 
     genres = Movie.objects.mongo_distinct("genres")
-    genres.remove(None)
+    genres = [g for g in genres if g != None and g is not None]
     genres.sort()
     dates = Movie.objects.mongo_distinct("release_date")
     years = list(set([d[:4] for d in dates if len(d)>3]))
