@@ -41,12 +41,12 @@ def movieDetail(request, id):
                 tmdb_list.append(obj.get('id'))
 
     recommendedMovies = Movie.objects.filter(id__in=tmdb_list)
-    reviews = Review.objects.filter(id=id)
+    reviews = Review.objects.filter(imdb_id = movie.imdb_id)
     if reviews.exists():
         reviews = reviews.first().results
     else:
         reviews = None
-    crew = Credits.objects.filter(imdb_id=id)
+    crew = Credits.objects.filter(imdb_id=movie.imdb_id)
     if crew.exists():
         crew = crew.first()
     else:
@@ -263,7 +263,7 @@ def profile(request):
 def index(request):
     if request.user.is_authenticated:
         return popularMovies(request)
-    return render(request, 'index.html', {})
+    return render(request, 'movies/login.html', {})
 
 @login_required
 def movie(request):
