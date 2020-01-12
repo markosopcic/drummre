@@ -191,7 +191,7 @@ def popularMovies(request):
             liked_movies = [int(lm) for lm in user.first().liked_movies]
 
     context = {'movies': movies, 'paginator': paginator, 'genres': genres, 'years': years, 'liked': liked_movies}
-    return render(request, 'shows/popular.html', context)
+    return render(request, 'movies/popular.html', context)
 
 def likemovie(request):
     if request.user.is_authenticated:
