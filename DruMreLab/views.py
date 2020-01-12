@@ -263,7 +263,7 @@ def profile(request):
 def index(request):
     if request.user.is_authenticated:
         return popularMovies(request)
-    rand = Movie.objects.mongo_aggregate([{"$sample":{"size":1}}]).next()
+    rand = Movie.objects.mongo_aggregate([{"$match":{"backdrop_path":{"$ne":None},"adult":{"$ne":True}}},{"$sample":{"size":1}}]).next()
     while rand["backdrop_path"] is None or rand["adult"] is True:
         rand = Movie.objects.mongo_aggregate([{"$sample": {"size": 1}}]).next()
     return render(request, 'movies/login.html', {"backdrop":rand["backdrop_path"]})
