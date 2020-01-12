@@ -290,7 +290,12 @@ def profile(request):
             backdrop = random.choice(backdrop)["backdrop_path"]
         else:
             backdrop = None
-        return render(request, "movies/profile.html",{"user":request.user,"movies":movies,"backdrop":backdrop})
+        liked_movies = []
+        if request.user.is_authenticated:
+            user = UserLikedMovies.objects.filter(user_id=request.user.id)
+            if user.exists():
+                liked_movies = [int(lm) for lm in user.first().liked_movies]
+        return render(request, "movies/profile.html",{"user":request.user,"movies":movies,"backdrop":backdrop,"liked":liked_movies})
     else:
         return HttpResponseBadRequest()
 ##find distinct stuff Movie.objects.mongo_find({}).distinct("genres")
@@ -333,6 +338,7 @@ def weatherRecommend(request):
         movies = []
         movies.extend(thrillers)
         movies.extend(horrors)
+        genres = "Thriller, Horror"
     elif (weather_id >=500 and weather_id <=531) or (weather_id>=300 and weather_id<=321): #rain
         mov = Movie.objects.filter(genres=["Drama"])
         cnt = mov.count()
@@ -343,6 +349,7 @@ def weatherRecommend(request):
         cnt = mov.count()
         slice = int(random.random()*(cnt-10))
         movies.extend(list(mov[slice:slice+10]))
+        genres = "Drama, Mystery"
     elif(weather_id>=600 and weather_id<=622):
         mov = Movie.objects.filter(genres=["Romance"])
         cnt = mov.count()
@@ -353,6 +360,7 @@ def weatherRecommend(request):
         cnt = mov.count()
         slice = int(random.random()*(cnt-10))
         movies.extend(list(mov[slice:slice+10]))
+        genres = "Romance, Family"
     else:
         mov = Movie.objects.filter(genres=["Action"])
         cnt = mov.count()
@@ -364,5 +372,6 @@ def weatherRecommend(request):
         slice = int(random.random()*(cnt-10))
         movies.extend(list(mov[slice:slice+10]))
         new_movies = [mov.__dict__ for mov in movies]
-    return render(request,"movies/weatherRecommend.html",{"weather":json.dumps(result),"movies":new_movies})
+        genres = "Action, Comedy"
+    return render(request,"movies/weatherRecommend.html",{"weather_icon":result["weather"][0]["icon"],"weather_description":result["weather"][0]["description"],"movies":new_movies,"genres":genres})
 

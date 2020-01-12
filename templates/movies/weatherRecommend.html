@@ -2,6 +2,10 @@
 {% block inner_content %}
             <div class="container-fluid content">
                 <div class="content-title">
+                    <div id="weather">
+                        Your current weather: {{ weather_description }} <img src="http://openweathermap.org/img/wn/{{weather_icon}}@2x.png" />
+                        <p>Based on that recommending the random movies from genres: {{ genres }}
+                    </div>
                     Recommended movies:
                 </div>
                 <div class="reccomendations">

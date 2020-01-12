@@ -64,6 +64,17 @@
                     </div>
     {% endif %}
     <script>
+            function sendLike(id) {
+            const Http = new XMLHttpRequest();
+            Http.open("GET", '{% url 'likemovie' %}?movie_id=' + id);
+            Http.send();
+            Http.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("like-" + id).classList.toggle('btn-light');
+                    document.getElementById("like-" + id).classList.toggle('btn-secondary');
+                }
+            }
+        }
     $(document).ready(()=>{
         $(document.body).css("background-image","url('https://image.tmdb.org/t/p/original{{ backdrop }}')")
         $(document.body).css("background-attachment","fixed")
