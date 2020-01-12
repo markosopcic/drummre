@@ -60,7 +60,7 @@ def movieDetail(request, id):
 def recommendMovies(request):
     if request.user.is_authenticated is False:
         return render(request, "some.html", {"movies": []})
-    liked = UserLikedMovies.objects.filter(id=request.user.id)
+    liked = UserLikedMovies.objects.filter(user_id=request.user.id)
     if not liked.exists() or len(liked.first().liked_movies) < 1:
         return HttpResponseRedirect(reverse('popularmovies') + "?like_msg=true")
     liked = [int(l) for l in liked.first().liked_movies]
@@ -133,7 +133,7 @@ def recommendMovies(request):
 
     liked_movies = []
     if request.user.is_authenticated:
-        user = UserLikedMovies.objects.filter(id=request.user.id)
+        user = UserLikedMovies.objects.filter(user_id=request.user.id)
         if user.exists():
             liked_movies = [int(lm) for lm in user.first().liked_movies]
 
@@ -144,9 +144,9 @@ def listuserliked(request):
     if request.user.is_authenticated is False:
         return HttpResponseBadRequest()
     user_id = request.user.id
-    res =  UserLikedMovies.objects.filter(id=user_id)
+    res =  UserLikedMovies.objects.filter(user_id=user_id)
     if not res.exists():
-        UserLikedMovies.objects.create(id=user_id,liked_movies=[])
+        UserLikedMovies.objects.create(user_id=user_id,liked_movies=[])
         return render(request,'some.html',{})
     res = res[0].liked_movies
     movies = list(Movie.objects.mongo_find({"imdb_id":{"$all":res}}))
