@@ -1,16 +1,12 @@
 {% extends "movies/SidebarTemplate.html" %}
 {% block inner_content %}
             <div class="container-fluid content">
-                {% if request.GET.like_msg %}
-                    <div class="alert alert-secondary" role="alert">
-                        You have not favorited any movies yet! Find your favorite movies and click the ♥ button to enable personalized recommendations.
-                    </div>
-                {% endif %}
                 <div class="content-title">
-                    Popular movies:
+                    Recommended movies:
                 </div>
                 <div class="reccomendations">
-                    <div class="toggles">
+                <!--
+                   <div class="toggles">
                         <button type="button" class="btn btn-outline-light"
                             onclick="toggleMenuDisplay('search-menu', 'filter-menu')">Search...</button>
                         <button type="button" class="btn btn-outline-light"
@@ -84,7 +80,8 @@
                             </ul>
                         </nav>
                     </div>
-                    <div class="movies">
+                -->
+                    <div class="movies no-header">
                         <div class="movie-list">
                             {% for movie in movies %}
                             <div class="card-view">
@@ -130,6 +127,7 @@
             </div>
 
     <script>
+        /*
         function toggleMenuDisplay(on, off) {
             let current = document.getElementsByClassName(on)[0];
             if (current) {
@@ -165,6 +163,7 @@
             path += "page=" + page;
             return path;
         }
+        */
         function sendLike(id) {
             const Http = new XMLHttpRequest();
             Http.open("GET", '{% url 'likemovie' %}?movie_id=' + id);

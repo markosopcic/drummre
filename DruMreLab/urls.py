@@ -25,7 +25,7 @@ urlpatterns = [
     path('',views.index,name="index"),
     path('admin/', admin.site.urls),
     path('userlikedmovies/',views.listuserliked),
-    path('recommendmovies/',views.recommendMovies),
+    path('recommendmovies/',views.recommendMovies,name="recommend"),
     path('movies/<int:id>/', views.movieDetail),
     path('likemovie/',views.likemovie,name="likemovie"),
     path('popularmovies/',views.popularMovies,name="popularmovies"),

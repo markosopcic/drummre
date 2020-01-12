@@ -36,6 +36,10 @@
     margin-bottom: 0px;
 }
 
+.wrapper .sidebar .list-group-item:hover {
+    background-color: #e9ecef;
+}
+
 .wrapper .sidebar .list-divider {
     height: 0px;
     border-bottom: 1px solid rgba(0,0,0,.125);
@@ -46,6 +50,10 @@
     padding: 0 1.25rem;
     display: flex;
     flex-direction: column;
+}
+
+.wrapper .content .alert {
+    margin-top: 1rem;
 }
 
 .wrapper .content-title {
@@ -131,6 +139,11 @@
     border-bottom-right-radius: 8px;
     border: 1px solid rgba(0,0,0,.5);
     border-top: none;
+}
+
+.wrapper .reccomendations .movies.no-header {
+    border-radius: 8px;
+    border-top: 1px solid rgba(0,0,0,.5);
 }
 
 .wrapper .reccomendations .movies .movie-list {
