@@ -4,7 +4,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'shows/profile.css' %}">
 {% endblock %}
 {% block content %}
-<div style="padding-left:2%" id="data">
+<div style="padding-left:2%;background-color:lightgrey;opacity:90%" id="data">
     <h3>Your Profile</h3>
 <h5>First Name: {{ user.first_name }}</h5>
     <h5>Last Name: {{ user.last_name }}</h5>
@@ -14,12 +14,13 @@
 <p></p>
 <h5>Do you want to delete your profile? All your data will be deleted!</h5>
 <button style="padding-left:2%" class="btn btn-danger" onclick="deleteAccount()" >Delete profile</button><p></p>
-        </div>
+
 {% if not movies %}
     <h5 style="text-align:center">Whooops! Looks like you do not have any liked movies yet! Better start watching and liking!</h5>
     {% else %}
 <h5 style="padding-left:2%">Your liked movies:</h5>
-<div class="movies" style="background-image:url('https://image.tmdb.org/t/p/original{{ backdrop }}');background-attachment:fixed;background-size:cover">
+            </div>
+<div class="movies">
                         <div class="movie-list">
                             {% for movie in movies %}
                             <div class="card-view">
@@ -63,6 +64,11 @@
                     </div>
     {% endif %}
     <script>
+    $(document).ready(()=>{
+        $(document.body).css("background-image","url('https://image.tmdb.org/t/p/original{{ backdrop }}')")
+        $(document.body).css("background-attachment","fixed")
+        $(document.body).css("background-size","cover")
+    })
     function deleteAccount(){
         if(window.confirm("Are you really sure you want to delete your account? All your data will be erased!")){
             window.location="/deleteProfile/"

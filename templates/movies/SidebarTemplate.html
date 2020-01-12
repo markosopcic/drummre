@@ -10,8 +10,16 @@
             <li class="list-group-item" onclick="location.href={% url 'recommend' %}">My recommendations</li>
             <li class="list-divider" />
             <li class="list-group-item" onclick="location.href={% url 'profile' %}">My profile</li>
+            <li class="list-divider"/>
+            <li class="list-group-item" onclick="getWeatherRecommendations()">Weather Recommendations</li>
         </ul>
     </div>
     {% block inner_content %}{% endblock %}
 </div>
+    <script>
+    function getWeatherRecommendations(){
+    navigator.geolocation.getCurrentPosition(pos => {
+        location.href="{% url 'weatherRecommend' %}?"+"longitude="+pos.coords.longitude+"&latitude="+pos.coords.latitude;
+    })}
+    </script>
 {% endblock %}

@@ -1,0 +1,221 @@
+{% extends "movies/SidebarTemplate.html" %}
+{% block inner_content %}
+            <div class="container-fluid content">
+                <div class="content-title">
+                    Recommended movies:
+                </div>
+                <div class="reccomendations">
+                <!--
+                   <div class="toggles">
+                        <button type="button" class="btn btn-outline-light"
+                            onclick="toggleMenuDisplay('search-menu', 'filter-menu')">Search...</button>
+                        <button type="button" class="btn btn-outline-light"
+                            onclick="toggleMenuDisplay('filter-menu', 'search-menu')">Filter...</button>
+                    </div>
+                    <div class="search-menu">
+                        <div class="input-menu">
+                            <input type="text" class="form-control" id="search" placeholder="...">
+                        </div>
+                        <div class="apply-button">
+                            <button type="button" class="btn btn-outline-light"
+                                onclick="location.href=getSearchUrl();">Apply</button>
+                        </div>
+                    </div>
+                    <div class="filter-menu">
+                        <div class="select-menu">
+                            <div class="menu-name">
+                                Genre:
+                            </div>
+                            <select id="genre-select" class="form-control">
+                                <option selected>All</option>
+                                {% for g in genres %}
+                                <option>{{g}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="select-menu">
+                            <div class="menu-name">
+                                Year:
+                            </div>
+                            <select id="year-select" class="form-control">
+                                <option selected>All</option>
+                                {% for y in years %}
+                                <option>{{y}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="filler"></div>
+                        <div class="apply-button">
+                            <button type="button" class="btn btn-outline-light"
+                                onclick="location.href=getFilterUrl();">Apply</button>
+                        </div>
+                    </div>
+                    <div class="pagination-container">
+                        <nav class="pagination-nav">
+                            <ul class="pagination justify-content-center">
+                                <li class="page-item {% if paginator.page == 1 %}disabled{% endif %}">
+                                    <a class="page-link" 
+                                        onclick="location.href=getPagingUrl({{paginator.page|add:-1}})">Previous</a>
+                                </li>
+                                {% if paginator.page > 1 %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        onclick="location.href=getPagingUrl({{paginator.page|add:-1}})">{{paginator.page|add:-1}}</a>
+                                </li>
+                                {% endif %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        onclick="location.href=getPagingUrl({{paginator.page}})">{{paginator.page}}</a>
+                                </li>
+                                {% if paginator.hasNext %}
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        onclick="location.href=getPagingUrl({{paginator.page|add:1}})">{{paginator.page|add:1}}</a>
+                                </li>
+                                {% endif %}
+                                <li class="page-item {% if not paginator.hasNext %}disabled{% endif %}">
+                                    <a class="page-link"
+                                        onclick="location.href=getPagingUrl({{paginator.page|add:1}})">Next</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                -->
+                    {% if movies|length == 0 %}
+                    <div class="alert alert-secondary" role="alert">
+                        No recommendations were found based on your favorited movies.
+                    </div>
+                    {% else %}
+                    <div class="movies no-header">
+                        <div class="movie-list">
+                            {% for movie in movies %}
+                            <div class="card-view">
+                                <div class="card-header">
+                                    {% if movie.poster_path %}
+                                    <img src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}">
+                                    {% else %}
+                                    <img src='https://cdn.pixabay.com/photo/2013/07/12/13/58/camera-147680_960_720.png'>
+                                    {% endif %}
+                                    <button id="like-{{movie.id}}" type="button" class="btn card-like {% if movie.id in liked %}btn-secondary{% else %}btn-light{% endif %}"
+                                        onclick="sendLike({{movie.id}})">♥</button>
+                                </div>
+                                <div class="card-content">
+                                    <div class="card-content-head">
+                                        <div class="title">
+                                            <a href="/movies/{{ movie.id }}">
+                                                <h3 class="card-movie-title">{{movie.title}}</h3>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card-movie-info">
+                                        <div class="ratings">
+                                            <span>Rating: </span>
+                                            <span>{{movie.vote_average}}/10</span>
+                                        </div>
+                                        <div class="movie-running-time">
+                                            <span>Release Date: </span>
+                                            <span>{{movie.release_date}}</span>
+                                        </div>
+                                        {% if movie.runtime %}
+                                        <div class="movie-running-time">
+                                            <span>Running time: </span>
+                                            <span>{{movie.runtime}} min</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+    <script>
+        /*
+        function toggleMenuDisplay(on, off) {
+            let current = document.getElementsByClassName(on)[0];
+            if (current) {
+                let currDisplay = current.currentStyle ? current.currentStyle.display : getComputedStyle(current, null).display;
+                document.getElementsByClassName(on)[0].style.display = currDisplay == 'none' ? 'flex' : 'none';
+                document.getElementsByClassName(off)[0].style.display = 'none'
+            }
+        }
+        function getFilterUrl() {
+            let gs = document.getElementById("genre-select");
+            let g = gs.options[gs.selectedIndex].text;
+            let ys = document.getElementById("year-select");
+            let y = ys.options[ys.selectedIndex].text;
+            let path = "{% url 'popularmovies' %}?";
+            if (g != "All") path += "genre=" + g;
+            if (g != "All" && y != "All") path += "&";
+            if (y != "All") path += "year=" + y;
+            return path;
+        }
+        function getSearchUrl() {
+            let s = document.getElementById("search").value;
+            if (s) return "{% url 'popularmovies' %}?search=" + s;
+            return "{% url 'popularmovies' %}";
+        }
+        function getPagingUrl(page) {
+            let s = "{{ request.GET.search }}";
+            let g = "{{ request.GET.genre }}";
+            let y = "{{ request.GET.year }}";
+            let path = "{% url 'popularmovies' %}?";
+            if (s) path += "search=" + s + "&";
+            if (g) path += "genre=" + g + "&";
+            if (y) path += "year=" + y + "&";
+            path += "page=" + page;
+            return path;
+        }
+        */
+        function sendLike(id) {
+            const Http = new XMLHttpRequest();
+            Http.open("GET", '{% url 'likemovie' %}?movie_id=' + id);
+            Http.send();
+            Http.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("like-" + id).classList.toggle('btn-light');
+                    document.getElementById("like-" + id).classList.toggle('btn-secondary');
+                }
+            }
+        }
+    </script>
+
+
+<!--
+{% for movie in movies %}
+<p>Title: {{movie.title}}</p>
+<p>Popularity: {{movie.popularity}}</p>
+<p>Genre:
+{% for genre in movie.genres %}
+{{genre}}
+{% endfor %}
+</p>
+<p>
+    Release date: {{ movie.release_date}}
+</p>
+<br>
+{% endfor %}
+
+{% for movie in movies %}
+<p>Title: {{movie.title}}</p>
+<p>Popularity: {{movie.popularity}}</p>
+<p>Genre:
+{% for genre in movie.genres %}
+{{genre}}
+{% endfor %}
+</p>
+<p>
+    Release date: {{ movie.release_date}}
+</p>
+<br>
+{% endfor %}
+
+<br>
+<p>Current page: {{paginator.page}}</p>
+<p>Has next page: {{paginator.hasNext}}</p>
+<p>Total pages: {{paginator.totalPages}}</p>
+-->
+{% endblock %}

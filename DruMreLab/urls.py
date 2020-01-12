@@ -32,7 +32,7 @@ urlpatterns = [
     path('likemovie/',views.likemovie,name="likemovie"),
     path('popularmovies/',views.popularMovies,name="popularmovies"),
     path('register/',views.signup,name="register"),
-    path('get_movies',views.get_movies,name="get_movies"),
+    path('weatherRecommend/',views.weatherRecommend,name="weatherRecommend"),
     path('login/',views.user_login,name="login"),
     path('', include('social_django.urls', namespace='social')),
     path('logout/', LogoutView.as_view(), {'next_page': settings.LOGOUT_REDIRECT_URL},

@@ -312,7 +312,7 @@ def movie(request):
 
 
 @login_required
-def get_movies(request):
+def weatherRecommend(request):
     http = urllib3.PoolManager()
     long = request.GET.get("longitude")
     lat = request.GET.get("latitude")
@@ -324,11 +324,11 @@ def get_movies(request):
     if (weather_id >= 200 and weather_id <=232) or (weather_id>=701 and weather_id<=781): #thunderstorm, disasters
         mov = Movie.objects.filter(genres=["Thriller"])
         cnt = mov.count()
-        slice = random.random()*(cnt-10)
+        slice = int(random.random()*(cnt-10))
         thrillers = list(mov[slice:slice+10])
         hor = Movie.objects.filter(genres = ["Horror"])
         cnt = hor.count()
-        slice = random.random()*(cnt-10)
+        slice = int(random.random()*(cnt-10))
         horrors = random.sample(list(hor[slice:slice+10]),10)
         movies = []
         movies.extend(thrillers)
@@ -336,32 +336,33 @@ def get_movies(request):
     elif (weather_id >=500 and weather_id <=531) or (weather_id>=300 and weather_id<=321): #rain
         mov = Movie.objects.filter(genres=["Drama"])
         cnt = mov.count()
-        slice = random.random()*(cnt-10)
+        slice = int(random.random()*(cnt-10))
         movies = []
         movies.extend(mov[slice:slice+10])
         mov = Movie.objects.filter(genres=["Mystery"])
         cnt = mov.count()
-        slice = random.random()*(cnt-10)
+        slice = int(random.random()*(cnt-10))
         movies.extend(list(mov[slice:slice+10]))
     elif(weather_id>=600 and weather_id<=622):
         mov = Movie.objects.filter(genres=["Romance"])
         cnt = mov.count()
-        slice = random.random()*(cnt-10)
+        slice = int(random.random()*(cnt-10))
         movies = []
         movies.extend(mov[slice:slice+10])
         mov = Movie.objects.filter(genres=["Family"])
         cnt = mov.count()
-        slice = random.random()*(cnt-10)
+        slice = int(random.random()*(cnt-10))
         movies.extend(list(mov[slice:slice+10]))
     else:
         mov = Movie.objects.filter(genres=["Action"])
         cnt = mov.count()
-        slice = random.random()*(cnt-10)
+        slice = int(random.random()*(cnt-10))
         movies = []
-        movies.extend(mov[slice:slice+10])
+        movies.extend(list(mov[slice:slice+10]))
         mov = Movie.objects.filter(genres=["Comedy"])
         cnt = mov.count()
-        slice = random.random()*(cnt-10)
+        slice = int(random.random()*(cnt-10))
         movies.extend(list(mov[slice:slice+10]))
-    return JsonResponse({"weather":json.dumps(result),"movies":serializers.serialize('json',movies)})
+        new_movies = [mov.__dict__ for mov in movies]
+    return render(request,"movies/weatherRecommend.html",{"weather":json.dumps(result),"movies":new_movies})
 
