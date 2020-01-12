@@ -1,90 +1,96 @@
-{% extends "movies/NavbarTemplate.html" %}
+{% extends "movies/SidebarTemplate.html" %}
 {% block head %}
-    {% load static %}
-        <link rel="stylesheet" type="text/css" href="{% static 'shows/profile.css' %}">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'shows/profile.css' %}">
 {% endblock %}
-{% block content %}
-<div style="padding-left:2%;background-color:lightgrey;opacity:90%" id="data">
-    <h3>Your Profile</h3>
-<h5>First Name: {{ user.first_name }}</h5>
-    <h5>Last Name: {{ user.last_name }}</h5>
-    <h5>Last Login: {{ user.last_login }}</h5>
-    <h5>Email: {{ user.email }}</h5>
-    <h5>Joined: {{ user.date_joined }}</h5>
-<p></p>
-<h5>Do you want to delete your profile? All your data will be deleted!</h5>
-<button style="padding-left:2%" class="btn btn-danger" onclick="deleteAccount()" >Delete profile</button><p></p>
+{% block inner_content %}
+<div class="profile-content"
+    style="background-image:url('https://image.tmdb.org/t/p/original{{ backdrop }}');background-attachment:fixed;background-size:cover">
+    <div style="padding-left:2%" id="data" class="profile-data">
+        <h3>Your Profile</h3>
+        <div class="personal">
+            <h5>First Name: {{ user.first_name }}</h5>
+            <h5>Last Name: {{ user.last_name }}</h5>
+            <h5>Last Login: {{ user.last_login }}</h5>
+            <h5>Email: {{ user.email }}</h5>
+            <h5>Joined: {{ user.date_joined }}</h5>
+        </div>
+        <p></p>
+        <div class="deletion">
+            <h5>Do you want to delete your profile?</h5>
+            <h5>All your data will be deleted!</h5>
+            <button style="padding-left:2%" class="btn btn-danger" onclick="deleteAccount()">Delete profile</button>
+        </div>
+    </div>
+    <div class="liked-data">
+        <h5 style="padding-left:2%">Your liked movies:</h5>
+        {% if not movies %}
+        <div class="alert alert-secondary" role="alert">
+            Whooops! Looks like you do not have any liked movies yet! Better start watching and liking!
+        </div>
 
-{% if not movies %}
-    <h5 style="text-align:center">Whooops! Looks like you do not have any liked movies yet! Better start watching and liking!</h5>
-    {% else %}
-<h5 style="padding-left:2%">Your liked movies:</h5>
-            </div>
-<div class="movies">
-                        <div class="movie-list">
-                            {% for movie in movies %}
-                            <div class="card-view">
-                                <div class="card-header">
-                                    {% if movie.poster_path %}
-                                    <img src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}">
-                                    {% else %}
-                                    <img src='https://cdn.pixabay.com/photo/2013/07/12/13/58/camera-147680_960_720.png'>
-                                    {% endif %}
-                                    <button id="like-{{movie.id}}" type="button" class="btn card-like {% if movie.id in liked %}btn-secondary{% else %}btn-light{% endif %}"
-                                        onclick="sendLike({{movie.id}})">♥</button>
-                                </div>
-                                <div class="card-content">
-                                    <div class="card-content-head">
-                                        <div class="title">
-                                            <a href="/movies/{{ movie.id }}">
-                                                <h3 class="card-movie-title">{{movie.title}}</h3>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="card-movie-info">
-                                        <div class="ratings">
-                                            <span>Rating: </span>
-                                            <span>{{movie.vote_average}}/10</span>
-                                        </div>
-                                        <div class="movie-running-time">
-                                            <span>Release Date: </span>
-                                            <span>{{movie.release_date}}</span>
-                                        </div>
-                                        {% if movie.runtime %}
-                                        <div class="movie-running-time">
-                                            <span>Running time: </span>
-                                            <span>{{movie.runtime}} min</span>
-                                        </div>
-                                        {% endif %}
-                                    </div>
-                                </div>
+        {% else %}
+        <div class="movies">
+            <div class="movie-list">
+                {% for movie in movies %}
+                <div class="card-view">
+                    <div class="card-header">
+                        {% if movie.poster_path %}
+                        <img src="https://image.tmdb.org/t/p/w500{{movie.poster_path}}">
+                        {% else %}
+                        <img src='https://cdn.pixabay.com/photo/2013/07/12/13/58/camera-147680_960_720.png'>
+                        {% endif %}
+                        <button id="like-{{movie.id}}" type="button" class="btn card-like btn-secondary"
+                            onclick="sendLike({{movie.id}})">♥</button>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-content-head">
+                            <div class="title">
+                                <a href="/movies/{{ movie.id }}">
+                                    <h3 class="card-movie-title">{{movie.title}}</h3>
+                                </a>
                             </div>
-                            {% endfor %}
+                        </div>
+                        <div class="card-movie-info">
+                            <div class="ratings">
+                                <span>Rating: </span>
+                                <span>{{movie.vote_average}}/10</span>
+                            </div>
+                            <div class="movie-running-time">
+                                <span>Release Date: </span>
+                                <span>{{movie.release_date}}</span>
+                            </div>
+                            {% if movie.runtime %}
+                            <div class="movie-running-time">
+                                <span>Running time: </span>
+                                <span>{{movie.runtime}} min</span>
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
-    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
     <script>
-            function sendLike(id) {
+        function deleteAccount() {
+            if (window.confirm("Are you really sure you want to delete your account? All your data will be erased!")) {
+                window.location = "/deleteProfile/"
+            }
+        }
+        function sendLike(id) {
             const Http = new XMLHttpRequest();
             Http.open("GET", '{% url 'likemovie' %}?movie_id=' + id);
             Http.send();
-            Http.onreadystatechange = function() {
+            Http.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("like-" + id).classList.toggle('btn-light');
                     document.getElementById("like-" + id).classList.toggle('btn-secondary');
                 }
             }
         }
-    $(document).ready(()=>{
-        $(document.body).css("background-image","url('https://image.tmdb.org/t/p/original{{ backdrop }}')")
-        $(document.body).css("background-attachment","fixed")
-        $(document.body).css("background-size","cover")
-    })
-    function deleteAccount(){
-        if(window.confirm("Are you really sure you want to delete your account? All your data will be erased!")){
-            window.location="/deleteProfile/"
-        }
-    }
     </script>
-
+</div>
 {% endblock %}

@@ -1,136 +1,180 @@
-{% extends "movies/NavbarTemplate.html" %}
+{% extends "movies/SidebarTemplate.html" %}
 {% block head %}
-    {% load static %}
+{% load static %}
 <link rel="stylesheet" type="text/css" href="{% static 'shows/moviedetail.css' %}">
 {% endblock %}
-{% block content %}
-    <div>
-    <div id="head" style="background-color:#f8f9fa">
-<h2 style="text-align:center">{{ movie.title }} ( {{ movie.release_date|slice:"0:4" }} )       {{ movie.vote_average }}/10</h2>
-    {% if movie.tagline %}<h5 style="text-align:center">"{{ movie.tagline }}"</h5>{% endif %}
+{% block inner_content %}
+<div class="movie-detail-content"
+    style="background-image:url('https://image.tmdb.org/t/p/original{{ movie.backdrop_path }}');background-attachment:fixed;background-size:cover">
+    <div id="head" class="movie-title">
+        <h2 style="text-align:center">{{ movie.title }} ({{ movie.release_date|slice:"0:4" }}) -
+            {{ movie.vote_average }}/10</h2>
+        {% if movie.tagline %}<h5 style="text-align:center">"{{ movie.tagline }}"</h5>{% endif %}
     </div>
-<div  id="details" style="padding-top:5%;padding-left:2%;">
-<h5 class="form-control" style="width:30%">Release date: {{ movie.release_date }}</h5>
-<img style="float:right;padding-right:2%;padding-top:0" src="https://image.tmdb.org/t/p/w400{{ movie.poster_path }}">
-<h5 class="form-control" style="width:30%">Runtime: {{ movie.runtime }} minutes</h5>
-<h5 class="form-control" style="width:30%">Number of votes: {{ movie.vote_count }}</h5>
-{% if movie.budget and movie.budget != 0 %}
-<h5 class="form-control" style="width:30%">Budget: {{ movie.budget }}$</h5>
-{% endif %}
-<h5 class="form-control" style="width:30%">Genres:</h5>
-    <ul>{% for genre in movie.genres %}
-    <li class="form-control" style="width:20%">{{ genre }}</li>
-        {% endfor %}
-    </ul>
-{%  if movie.production_companies %}
-    <h5 class="form-control" style="width:30%">Production Companies:</h5>
-    <ul>
-{% for company in movie.production_companies %}
-        <li class="form-control" style="width:30%">{{ company }}</li>
-    {% endfor %}
-    </ul>
-{% endif %}
-{% if movie.production_countries %}
-<h5 class="form-control" style="width:20%">Produced in:</h5>
-<ul>
-{% for country in movie.production_countries %}
-    <li class="form-control" style="width:30%">{{ country }}</li>
-    {% endfor %}
-</ul>
-
-{% endif %}
-{% if movie.overview %}
-    <h5 class="form-control" style="width:20%">Overview:</h5>
-    <textarea id="overview" disabled="disabled"  style="wrap:hard;width:70%" class="form-control">{{ movie.overview }}</textarea>
-{% endif %}
-{% if credits %}
-<button style="width:20%" class="btn btn-dark" id="toggle-crew"  onclick ="showCrew()">Show Crew</button>
-    <div id="crew" hidden="hidden">
-<table style="width:50%" class="table-striped table-dark">
-<tr><th style="width:50%">Photo</th><th style="width:30%">Crew member</th><th style="width:20%">Role</th></tr>
-    {% for member in credits.crew %}
-      <tr><td><img alt="actor image" onclick="window.open(this.src)" height="25%" width="20%" src="{% if member.profile_path %}https://image.tmdb.org/t/p/w500{{member.profile_path}}{% else %}{% static "placeholder-person.png" %}{% endif %}"></td><td>{{ member.name }}</td><td>{{ member.job }}</td></tr>
-{% endfor %}
-</table>
-</div>
-{% endif %}
-
-
-    {% if credits %}
-        <p></p>
-<button style="width:20%" class="btn btn-dark" id="toggle-actors"  onclick ="showActors()">Show Actors</button>
-    <div id="actors" hidden="hidden">
-<table style="width:50%" class="table-striped table-dark">
-<tr><th>Photo</th><th>Actor</th><th>Character</th></tr>
-    {% for member in credits.cast %}
-            <tr><td><img alt="actor image" onclick="window.open(this.src)" height="25%" width="20%" src="{% if member.profile_path %}https://image.tmdb.org/t/p/w500{{member.profile_path}}{% else %}{% static "placeholder-person.png" %}{% endif %}"></td><td>{{ member.name }}</td><td>{{ member.character }}</td></tr>
-{% endfor %}
-</table>
-</div>
-{% endif %}
-
-    {% if reviews %}
-        <p></p>
-<button style="width:20%" class="btn btn-dark" id="toggle-reviews"  onclick ="showReviews()">Show Reviews</button>
-    <div id="reviews" hidden="hidden">
-<table style="width:50%" class="table-striped table-dark">
-<tr><th>Author</th><th>Content</th></tr>
-    {% for review in reviews %}
-            <tr style="width:50%"><td>{{ review.author }}</td><td>{{ review.content }}<p></p></td></tr>
-{% endfor %}
-</table>
-</div>
-{% endif %}
-
-</div>
+    <div class="movie-contents" id="details">
+        <div class="basic-details">
+            <div class="info-wrapper">
+                <div class="info">
+                    <h5>Release date: {{ movie.release_date }}</h5>
+                    {% if movie.runtime and movie.runtime != 0 %}
+                    <h5>Runtime: {{ movie.runtime }} minutes</h5>
+                    {% endif %}
+                    <h5>Number of votes: {{ movie.vote_count }}</h5>
+                    {% if movie.budget and movie.budget != 0 %}
+                    <h5>Budget: {{ movie.budget }}$</h5>
+                    {% endif %}
+                    <h5>Genres:</h5>
+                    <ul>{% for genre in movie.genres %}
+                        <li>{{ genre }}</li>
+                        {% endfor %}
+                    </ul>
+                    {%  if movie.production_companies %}
+                    <h5>Production Companies:</h5>
+                    <ul>
+                        {% for company in movie.production_companies %}
+                        <li>{{ company }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% if movie.production_countries %}
+                    <h5>Produced in:</h5>
+                    <ul>
+                        {% for country in movie.production_countries %}
+                        <li>{{ country }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="poster-image">
+                <img src="https://image.tmdb.org/t/p/w400{{ movie.poster_path }}">
+            </div>
+        </div>
+        <div class="extended-details">
+            {% if movie.overview %}
+            <h5>Overview:</h5>
+            <span style="wrap:hard">{{ movie.overview }}</span>
+            {% endif %}
+        
+            <div class="detail-tables">
+                {% if credits %}
+                <button style="width:20%" class="btn btn-dark" id="toggle-crew" onclick="showCrew()">Show Crew</button>
+                <div id="crew" hidden="hidden">
+                    <table cellpadding="5" style="width:100%" class="table-striped table-dark">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Crew member</th>
+                            <th>Role</th>
+                        </tr>
+                        {% for member in credits.crew %}
+                        <tr>
+                            <td align="center"><img alt="actor image" onclick="window.open(this.src)" style="max-height:25%; max-width:50%;"
+                                    src="{% if member.profile_path %}https://image.tmdb.org/t/p/w500{{member.profile_path}}{% else %}{% static "placeholder-person.png" %}{% endif %}">
+                            </td>
+                            <td>{{ member.name }}</td>
+                            <td>{{ member.job }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endif %}
+    
+    
+                {% if credits %}
+                <p></p>
+                <button style="width:20%" class="btn btn-dark" id="toggle-actors" onclick="showActors()">Show
+                    Actors</button>
+                <div id="actors" hidden="hidden">
+                    <table cellpadding="5" style="width:100%" class="table-striped table-dark">
+                        <tr>
+                            <th>Photo</th>
+                            <th>Actor</th>
+                            <th>Character</th>
+                        </tr>
+                        {% for member in credits.cast %}
+                        <tr>
+                            <td align="center"><img alt="actor image" onclick="window.open(this.src)" style="max-height:25%; max-width:50%;"
+                                    src="{% if member.profile_path %}https://image.tmdb.org/t/p/w500{{member.profile_path}}{% else %}{% static "placeholder-person.png" %}{% endif %}">
+                            </td>
+                            <td>{{ member.name }}</td>
+                            <td>{{ member.character }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endif %}
+    
+                {% if reviews %}
+                <p></p>
+                <button style="width:20%" class="btn btn-dark" id="toggle-reviews" onclick="showReviews()">Show
+                    Reviews</button>
+                <div id="reviews" hidden="hidden">
+                    <table cellpadding="5" style="width:100%" class="table-striped table-dark">
+                        <tr>
+                            <th>Author</th>
+                            <th>Content</th>
+                        </tr>
+                        {% for review in reviews %}
+                        <tr style="width:50%">
+                            <td>{{ review.author }}</td>
+                            <td>{{ review.content }}<p></p>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
-
-<div >
-
-
 </div>
+
 <script>
+    /*
     {% if movie.backdrop_path %}
-$(document).ready(function(){
-    setHeight($("#overview"))
-    $("body").css("background-image","url(\"https://image.tmdb.org/t/p/original{{ movie.backdrop_path }}\")")
-    $("body").css("background-attachment"," fixed")
-    $("body").css("background-size","cover")
-    $("body").css("background-position","top 5%")
-})
+    $(document).ready(function () {
+        setHeight($("#overview"))
+        $("body").css("background-image", "url(\"https://image.tmdb.org/t/p/original{{ movie.backdrop_path }}\")")
+        $("body").css("background-attachment", " fixed")
+        $("body").css("background-size", "cover")
+        $("body").css("background-position", "top 5%")
+    })
     {% endif %}
-function showCrew(){
-    if($("#crew").attr("hidden")=="hidden"){
-        $("#crew").attr("hidden",false);
-        $("#toggle-crew").text("Hide Crew");
-    }else{
-        $("#crew").attr("hidden",true);
-        $("#toggle-crew").text("Show Crew")
+    */
+    function showCrew() {
+        if ($("#crew").attr("hidden") == "hidden") {
+            $("#crew").attr("hidden", false);
+            $("#toggle-crew").text("Hide Crew");
+        } else {
+            $("#crew").attr("hidden", true);
+            $("#toggle-crew").text("Show Crew")
+        }
     }
-}
 
-function showReviews(){
-    if($("#reviews").attr("hidden")=="hidden"){
-        $("#reviews").attr("hidden",false);
-        $("#toggle-reviews").text("Hide Reviews");
-    }else{
-        $("#reviews").attr("hidden",true);
-        $("#toggle-reviews").text("Show Reviews")
+    function showReviews() {
+        if ($("#reviews").attr("hidden") == "hidden") {
+            $("#reviews").attr("hidden", false);
+            $("#toggle-reviews").text("Hide Reviews");
+        } else {
+            $("#reviews").attr("hidden", true);
+            $("#toggle-reviews").text("Show Reviews")
+        }
     }
-}
-function showActors(){
-    if($("#actors").attr("hidden")=="hidden"){
-        $("#actors").attr("hidden",false);
-        $("#toggle-actors").text("Hide Actors");
-    }else{
-        $("#actors").attr("hidden",true);
-        $("#toggle-actors").text("Show Actors")
+    function showActors() {
+        if ($("#actors").attr("hidden") == "hidden") {
+            $("#actors").attr("hidden", false);
+            $("#toggle-actors").text("Hide Actors");
+        } else {
+            $("#actors").attr("hidden", true);
+            $("#toggle-actors").text("Show Actors")
+        }
     }
-}
-function setHeight(jq_in){
-    jq_in.each(function(index, elem){
-        elem.style.height = elem.scrollHeight+'px';
-    });
-}
+    /*
+    function setHeight(jq_in) {
+        jq_in.each(function (index, elem) {
+            elem.style.height = elem.scrollHeight + 'px';
+        });
+    }
+    */
 </script>
 {% endblock %}

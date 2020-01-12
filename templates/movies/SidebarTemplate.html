@@ -9,9 +9,9 @@
             <!--li class="list-group-item">Global recommendations</li-->
             <li class="list-group-item" onclick="location.href={% url 'recommend' %}">My recommendations</li>
             <li class="list-divider" />
-            <li class="list-group-item" onclick="location.href={% url 'profile' %}">My profile</li>
-            <li class="list-divider"/>
             <li class="list-group-item" onclick="getWeatherRecommendations()">Weather Recommendations</li>
+            <li class="list-divider"/>
+            <li class="list-group-item" onclick="location.href={% url 'profile' %}">My profile</li>
         </ul>
     </div>
     {% block inner_content %}{% endblock %}

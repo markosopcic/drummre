@@ -17,7 +17,6 @@
     display: flex;
 }
 
-
 .wrapper .sidebar {
     flex-grow: 0;
     flex-shrink: 0;
@@ -37,6 +36,10 @@
     margin-bottom: 0px;
 }
 
+.wrapper .sidebar .list-group-item:hover {
+    background-color: #e9ecef;
+}
+
 .wrapper .sidebar .list-divider {
     height: 0px;
     border-bottom: 1px solid rgba(0,0,0,.125);
@@ -47,6 +50,10 @@
     padding: 0 1.25rem;
     display: flex;
     flex-direction: column;
+}
+
+.wrapper .content .alert {
+    margin-top: 1rem;
 }
 
 .wrapper .content-title {
@@ -134,6 +141,11 @@
     border-top: none;
 }
 
+ .movies.no-header {
+    border-radius: 8px;
+    border-top: 1px solid rgba(0,0,0,.5);
+}
+
  .movies .movie-list {
     display: flex;
     flex-wrap: wrap;
@@ -174,12 +186,12 @@
 }
 
  .movies .movie-list .card-content {
-     background-color:lightgrey!important;
-     opacity:70%;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     border: 1px solid rgba(0,0,0,.5);
     padding: 0.25rem;
+    background-color:lightgrey!important;
+    opacity:70%;
 }
 
  .movies .movie-list .card-content .card-movie-title {
@@ -194,4 +206,36 @@
 
 .filler {
     flex-grow: 1;
+}
+
+.wrapper .profile-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row;
+}
+
+.wrapper .profile-content .profile-data {
+    width: 35%;
+    padding-top: 1rem;
+    background-color: rgb(255, 255, 255, 0.75);
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.wrapper .profile-content .profile-data .personal {
+    padding-top: 1rem;
+}
+
+.wrapper .profile-content .profile-data .deletion {
+    padding-top: 1rem;
+}
+
+.wrapper .profile-content .liked-data {
+    padding: 1rem;
+    background-image: linear-gradient(to right, rgb(255, 255, 255, 0.75), rgb(255, 255, 255, 0.0));
+    flex-grow: 1;
+}
+
+.wrapper .profile-content .liked-data .movies {
+    border: none;
 }

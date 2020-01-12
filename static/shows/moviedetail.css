@@ -2,6 +2,61 @@
     opacity:90%
 }
 
-table{
+.movie-contents table{
     opacity:90%
+}
+
+.wrapper .movie-detail-content {
+    flex-grow: 1;
+}
+
+.wrapper .movie-detail-content .movie-title {
+    padding-top: 0.5rem;
+    padding-bottom: 1px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    background-color: rgb(255, 255, 255, 0.9);
+}
+
+.wrapper .movie-detail-content .movie-contents .basic-details{
+    display: flex;
+    flex-direction: row;
+}
+
+.wrapper .movie-detail-content .movie-contents .basic-details .info-wrapper {
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    background-color: rgb(255, 255, 255, 0.7);
+}
+
+.wrapper .movie-detail-content .movie-contents .basic-details .info-wrapper .info {
+    margin-left: 2vw;
+}
+
+.wrapper .movie-detail-content .movie-contents .basic-details .poster-image {
+    flex-grow: 1;
+    flex-shrink: 0;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    background-image: linear-gradient(to right, rgb(255, 255, 255, 0.7), rgb(255, 255, 255, 0.0));
+}
+
+.wrapper .movie-detail-content .movie-contents .basic-details .poster-image img {
+    float: right;
+}
+
+.wrapper .movie-detail-content .movie-contents .extended-details {
+    background-color: rgb(255, 255, 255, 0.8);
+    border-top: 1px solid rgba(0, 0, 0, 0.125);
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    padding-left: 2vw;
+    padding-right: 2vw;
+}
+
+.wrapper .movie-detail-content .movie-contents .extended-details .detail-tables {
+    padding-top: 1rem;
 }

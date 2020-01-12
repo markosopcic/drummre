@@ -338,6 +338,7 @@ def weatherRecommend(request):
         movies = []
         movies.extend(thrillers)
         movies.extend(horrors)
+        new_movies = [mov.__dict__ for mov in movies]
         genres = "Thriller, Horror"
     elif (weather_id >=500 and weather_id <=531) or (weather_id>=300 and weather_id<=321): #rain
         mov = Movie.objects.filter(genres=["Drama"])
@@ -349,6 +350,7 @@ def weatherRecommend(request):
         cnt = mov.count()
         slice = int(random.random()*(cnt-10))
         movies.extend(list(mov[slice:slice+10]))
+        new_movies = [mov.__dict__ for mov in movies]
         genres = "Drama, Mystery"
     elif(weather_id>=600 and weather_id<=622):
         mov = Movie.objects.filter(genres=["Romance"])
@@ -360,6 +362,7 @@ def weatherRecommend(request):
         cnt = mov.count()
         slice = int(random.random()*(cnt-10))
         movies.extend(list(mov[slice:slice+10]))
+        new_movies = [mov.__dict__ for mov in movies]
         genres = "Romance, Family"
     else:
         mov = Movie.objects.filter(genres=["Action"])
