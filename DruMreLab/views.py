@@ -59,7 +59,7 @@ def recommendMovies(request):
     if request.user.is_authenticated is False:
         return render(request, "some.html", {"movies": []})
     liked = UserLikedMovies.objects.filter(id=request.user.id)
-    if not liked.exists():
+    if not liked.exists() or len(liked.first().liked_movies) < 1:
         return HttpResponseRedirect(reverse('popularmovies') + "?like_msg=true")
     liked = [int(l) for l in liked.first().liked_movies]
     tmdb_ids = Movie.objects.mongo_find({"id":{"$in":liked}}).distinct("id")
