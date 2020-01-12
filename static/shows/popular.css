@@ -158,6 +158,20 @@
     margin: auto;
 }
 
+.wrapper .reccomendations .movies .movie-list .card-header .card-like {
+    height: 2.5rem;
+    width: 2.5rem;
+    line-height: 2.5rem;
+    font-size: 2rem;
+    text-align: center;
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid rgba(0,0,0,.5);
+    margin-top: -2.5rem;
+    margin-left: 8.5rem;
+    position: absolute;
+}
+
 .wrapper .reccomendations .movies .movie-list .card-content {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;

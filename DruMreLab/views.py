@@ -177,7 +177,13 @@ def popularMovies(request):
     years = list(set([d[:4] for d in dates if len(d)>3]))
     years.sort(reverse = True)
 
-    context = {'movies': movies, 'paginator': paginator, 'genres': genres, 'years': years}
+    liked_movies = []
+    if request.user.is_authenticated:
+        user = UserLikedMovies.objects.filter(id=request.user.id)
+        if user.exists():
+            liked_movies = [int(lm) for lm in user.first().liked_movies]
+
+    context = {'movies': movies, 'paginator': paginator, 'genres': genres, 'years': years, 'liked': liked_movies}
     return render(request, 'shows/popular.html', context)
 
 def likemovie(request):
@@ -187,7 +193,10 @@ def likemovie(request):
         if user.exists() is False:
             UserLikedMovies.objects.create(id=request.user.id,liked_movies=[])
         user = UserLikedMovies.objects.filter(id = request.user.id).first()
-        user.liked_movies.append(movie_id)
+        if movie_id in user.liked_movies:
+            user.liked_movies.remove(movie_id)
+        else:
+            user.liked_movies.append(movie_id)
         UserLikedMovies.objects.filter(id = request.user.id).update(liked_movies=user.liked_movies)
         return HttpResponse(status=200)
     return HttpResponseBadRequest()

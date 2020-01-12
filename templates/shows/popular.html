@@ -127,7 +127,8 @@
                                     {% else %}
                                     <img src='https://cdn.pixabay.com/photo/2013/07/12/13/58/camera-147680_960_720.png'>
                                     {% endif %}
-                                    <div class="card-header-icon"></div>
+                                    <button id="like-{{movie.id}}" type="button" class="btn card-like {% if movie.id in liked %}btn-secondary{% else %}btn-light{% endif %}"
+                                        onclick="sendLike({{movie.id}})">♥</button>
                                 </div>
                                 <div class="card-content">
                                     <div class="card-content-head">
@@ -207,6 +208,17 @@
             if (y) path += "year=" + y + "&";
             path += "page=" + page;
             return path;
+        }
+        function sendLike(id) {
+            const Http = new XMLHttpRequest();
+            Http.open("GET", '{% url 'likemovie' %}?movie_id=' + id);
+            Http.send();
+            Http.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("like-" + id).classList.toggle('btn-light');
+                    document.getElementById("like-" + id).classList.toggle('btn-secondary');
+                }
+            }
         }
     </script>
 </body>
