@@ -149,6 +149,11 @@ def popularMovies(request):
     if year:
         regx = re.compile("^" + year, re.IGNORECASE)
         filterDict.update({"release_date": regx})
+    
+    search = request.GET.get('search')
+    if search:
+        regx = re.compile(search, re.IGNORECASE)
+        filterDict.update({"title": regx})
 
     page = request.GET.get("page")
     if not page:
@@ -165,7 +170,14 @@ def popularMovies(request):
     movies = Movie.objects.mongo_find(filterDict).sort('popularity', pymongo.DESCENDING).skip(
         (page - 1) * itemsPerPage).limit(itemsPerPage)
     movies = list(movies)
-    context = {'movies': movies, 'paginator': paginator}
+
+    genres = Movie.objects.mongo_distinct("genres")
+    genres.sort()
+    dates = Movie.objects.mongo_distinct("release_date")
+    years = list(set([d[:4] for d in dates if len(d)>3]))
+    years.sort(reverse = True)
+
+    context = {'movies': movies, 'paginator': paginator, 'genres': genres, 'years': years}
     return render(request, 'shows/popular.html', context)
 
 def likemovie(request):

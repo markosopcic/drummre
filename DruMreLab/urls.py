@@ -28,7 +28,7 @@ urlpatterns = [
     path('recommendmovies/',views.recommendMovies),
     path('movies/<int:id>/', views.movieDetail),
     path('likemovie/',views.likemovie),
-    path('popularmovies/',views.popularMovies),
+    path('popularmovies/',views.popularMovies,name="popularmovies"),
     path('register/',views.signup,name="register"),
     path('get_movies',views.get_movies,name="get_movies"),
     path('login/',views.user_login,name="login"),
