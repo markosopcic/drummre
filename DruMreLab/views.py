@@ -352,7 +352,7 @@ def weatherRecommend(request):
         movies.extend(list(mov[slice:slice+10]))
         new_movies = [mov.__dict__ for mov in movies]
         genres = "Drama, Mystery"
-    elif(weather_id>=600 and weather_id<=622):
+    elif(weather_id>=600 and weather_id<=622):#snow
         mov = Movie.objects.filter(genres=["Romance"])
         cnt = mov.count()
         slice = int(random.random()*(cnt-10))

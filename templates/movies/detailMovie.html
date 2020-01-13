@@ -23,11 +23,13 @@
                     {% if movie.budget and movie.budget != 0 %}
                     <h5>Budget: {{ movie.budget }}$</h5>
                     {% endif %}
+                {% if movie.genres|length > 0 %}
                     <h5>Genres:</h5>
                     <ul>{% for genre in movie.genres %}
                         <li>{{ genre }}</li>
                         {% endfor %}
                     </ul>
+                {% endif %}
                     {%  if movie.production_companies %}
                     <h5>Production Companies:</h5>
                     <ul>
