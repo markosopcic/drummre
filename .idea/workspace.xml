@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c0f95c2c-1bf6-44eb-a8b4-45c5d74cc92f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/DruMreLab/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/DruMreLab/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/shows/moviedetail.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/shows/moviedetail.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/movies/detailMovie.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/movies/detailMovie.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/shows/popular.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/shows/popular.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/shows/profile.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/shows/profile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/movies/NavbarTemplate.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/movies/NavbarTemplate.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/movies/popular.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/movies/popular.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/movies/recommend.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/movies/recommend.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/movies/weatherRecommend.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/movies/weatherRecommend.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +136,7 @@
       <workItem from="1578827309316" duration="21556000" />
       <workItem from="1578865839270" duration="2953000" />
       <workItem from="1578871474552" duration="174000" />
-      <workItem from="1578903282972" duration="441000" />
+      <workItem from="1578903282972" duration="919000" />
     </task>
     <servers />
   </component>
@@ -238,12 +240,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/templates/movies/recommend.html</url>
-          <line>173</line>
+          <line>162</line>
           <option name="timeStamp" value="62" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/DruMreLab/views.py</url>
-          <line>306</line>
+          <line>314</line>
           <option name="timeStamp" value="46" />
         </line-breakpoint>
       </breakpoints>

@@ -137,7 +137,11 @@ def recommendMovies(request):
         if user.exists():
             liked_movies = [int(lm) for lm in user.first().liked_movies]
 
-    context = {'movies': resultMovies[:20], 'liked': liked_movies}
+    rand = Movie.objects.mongo_aggregate([{"$match":{"backdrop_path":{"$ne":None},"adult":{"$ne":True}}},{"$sample":{"size":1}}]).next()
+    while rand["backdrop_path"] is None or rand["adult"] is True:
+        rand = Movie.objects.mongo_aggregate([{"$sample": {"size": 1}}]).next()
+
+    context = {'movies': resultMovies[:20], 'liked': liked_movies, "backdrop":rand["backdrop_path"]}
     return render(request, 'movies/recommend.html', context)
 
 def listuserliked(request):
@@ -199,7 +203,11 @@ def popularMovies(request):
         if user.exists():
             liked_movies = [int(lm) for lm in user.first().liked_movies]
 
-    context = {'movies': movies, 'paginator': paginator, 'genres': genres, 'years': years, 'liked': liked_movies}
+    rand = Movie.objects.mongo_aggregate([{"$match":{"backdrop_path":{"$ne":None},"adult":{"$ne":True}}},{"$sample":{"size":1}}]).next()
+    while rand["backdrop_path"] is None or rand["adult"] is True:
+        rand = Movie.objects.mongo_aggregate([{"$sample": {"size": 1}}]).next()
+
+    context = {'movies': movies, 'paginator': paginator, 'genres': genres, 'years': years, 'liked': liked_movies, "backdrop":rand["backdrop_path"]}
     return render(request, 'movies/popular.html', context)
 
 def likemovie(request):
@@ -376,5 +384,11 @@ def weatherRecommend(request):
         movies.extend(list(mov[slice:slice+10]))
         new_movies = [mov.__dict__ for mov in movies]
         genres = "Action, Comedy"
-    return render(request,"movies/weatherRecommend.html",{"weather_icon":result["weather"][0]["icon"],"weather_description":result["weather"][0]["description"],"movies":new_movies,"genres":genres})
+    
+    print(genres.split(", "))
+    rand = Movie.objects.mongo_aggregate([{"$match":{"backdrop_path":{"$ne":None},"adult":{"$ne":True},"genres":{"$in":genres.split(", ")}}},{"$sample":{"size":1}}]).next()
+    print(rand["genres"])
+    while rand["backdrop_path"] is None or rand["adult"] is True:
+        rand = Movie.objects.mongo_aggregate([{"$sample": {"size": 1}}]).next()
 
+    return render(request,"movies/weatherRecommend.html",{"weather_icon":result["weather"][0]["icon"],"weather_description":result["weather"][0]["description"],"movies":new_movies,"genres":genres, "backdrop":rand["backdrop_path"]})
